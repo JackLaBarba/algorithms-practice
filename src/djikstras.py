@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 import math
 from dataclasses import dataclass
 
@@ -29,13 +29,13 @@ class ShortestPath:
     def __init__(self, graph: Graph):
         self.graph = graph
 
-    def run(self, start: int):
+    def run(self, start: int) -> None:
         processed: List[int] = [False for i in range(self.graph.vertex_count)]
-        dists: List[int] = [math.inf for i in range(self.graph.vertex_count)]
-        parents: List[int] = [None for i in range(self.graph.vertex_count)]
+        dists: List[float] = [math.inf for i in range(self.graph.vertex_count)]
+        parents: List[Optional[int]] = [None for i in range(self.graph.vertex_count)]
 
         dists[start] = 0
-        next_vertex = start
+        next_vertex: Optional[int] = start
 
         while next_vertex is not None:
             for edge in self.graph.edges_from(next_vertex):
@@ -56,13 +56,13 @@ class ShortestPath:
         self.dists = dists
         self.parents = parents
 
-    def shortest_path_weight(self, end: int):
-        return self.dists[end]
+    def shortest_path_weight(self, end: int) -> int:
+        return int(self.dists[end])
 
-    def shortest_path(self, end: int):
+    def shortest_path(self, end: int) -> List[int]:
         cur = end
         path = [cur]
-        while self.parents[cur] is not None:
-            path = [self.parents[cur]] + path
-            cur = self.parents[cur]
+        while (parent := self.parents[cur]) is not None:
+            path = [parent] + path
+            cur = parent
         return path

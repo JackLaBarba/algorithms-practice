@@ -1,7 +1,7 @@
-from algo_practice.src.djikstras import Graph, ShortestPath
+from src.djikstras import Graph, ShortestPath
 
 
-def test_sp_a():
+def test_sp_a() -> None:
     graph = Graph(
         4,
         [
@@ -17,7 +17,7 @@ def test_sp_a():
     assert sp.shortest_path(3) == [0, 3]
 
 
-def test_sp_b():
+def test_sp_b() -> None:
     graph = Graph(
         4,
         [
