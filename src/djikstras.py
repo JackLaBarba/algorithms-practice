@@ -28,44 +28,40 @@ class ShortestPath():
         self.graph = graph
 
     def run(self, start: int):
-        processed: List[bool] = [False for i in range(self.graph.vertex_count)]
-        dist: List[int] = [math.inf for i in range(self.graph.vertex_count)]
-        parent: List[int] = [None for i in range(self.graph.vertex_count)]
+        processed: List[int] = [False for i in range(self.graph.vertex_count)]
+        dists: List[int] = [math.inf for i in range(self.graph.vertex_count)]
+        parents: List[int] = [None for i in range(self.graph.vertex_count)]
 
-        next_to_process = start
-        dist[start] = 0
+        dists[start] = 0
+        next_vertex = start
 
-        while next_to_process is not None:
-            for edge in self.graph.edges_from(next_to_process):
-                dist_thru = edge.weight + dist[next_to_process]
-                print(next_to_process, edge, dist_thru)
-                if dist_thru < dist[edge.to_vertex]:
-                    dist[edge.to_vertex] = dist_thru
-                    parent[edge.to_vertex] = next_to_process
+        while next_vertex is not None:
+            for edge in self.graph.edges_from(next_vertex):
+                dist_thru = dists[next_vertex] + edge.weight
+                if dists[edge.to_vertex] > dist_thru:
+                    dists[edge.to_vertex] = dist_thru
+                    parents[edge.to_vertex] = next_vertex
 
-            processed[next_to_process] = True
+            processed[next_vertex] = True
+            next_vertex = None
+            least_dist = math.inf
+            
+            for vertex, dist in enumerate(dists):
+                if not processed[vertex] and dist < least_dist:
+                    next_vertex = vertex
+                    least_dist = dist
 
-            least_distance = math.inf
-            next_to_process = None
-            for vertex, distance in enumerate(dist):
-                if not processed[vertex] and distance < least_distance:
-                    next_to_process = vertex
-                    least_distance = distance
+        self.dists = dists
+        self.parents = parents
 
-        print(dist)
-        print(parent)
-        self.dist = dist
-        self.parent = parent
+    def shortest_path_weight(self, end: int):
+        return self.dists[end]
 
-
-    def shortest_path_weight(self, end: int) -> int:
-        return self.dist[end]
-
-    def shortest_path(self, end: int) -> List[int]:
+    def shortest_path(self, end: int):
         cur = end
-        path = [end]
-        while self.parent[cur] is not None:
-            path = [self.parent[cur]] + path
-            cur = self.parent[cur]
-        
+        path = [cur]
+        while self.parents[cur] is not None:
+            path = [self.parents[cur]] + path
+            cur = self.parents[cur]
         return path
+
