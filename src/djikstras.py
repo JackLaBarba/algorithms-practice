@@ -2,10 +2,12 @@ from typing import List, Tuple
 import math
 from dataclasses import dataclass
 
+
 @dataclass
-class Edge():
+class Edge:
     weight: int
     to_vertex: int
+
 
 class Graph:
     def __init__(self, vertex_count: int, edges: List[Tuple[int, int, int]]):
@@ -16,14 +18,14 @@ class Graph:
             self.edges[y][x] = weight
 
     def edges_from(self, vertex: int) -> List[Edge]:
-        return [ 
-            Edge(weight, i) for i, weight 
-            in enumerate(self.edges[vertex]) 
+        return [
+            Edge(weight, i)
+            for i, weight in enumerate(self.edges[vertex])
             if weight >= 0
         ]
-        
 
-class ShortestPath():
+
+class ShortestPath:
     def __init__(self, graph: Graph):
         self.graph = graph
 
@@ -45,7 +47,7 @@ class ShortestPath():
             processed[next_vertex] = True
             next_vertex = None
             least_dist = math.inf
-            
+
             for vertex, dist in enumerate(dists):
                 if not processed[vertex] and dist < least_dist:
                     next_vertex = vertex
@@ -64,4 +66,3 @@ class ShortestPath():
             path = [self.parents[cur]] + path
             cur = self.parents[cur]
         return path
-
