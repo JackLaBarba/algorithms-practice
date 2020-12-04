@@ -1,7 +1,7 @@
 from algo_practice.src.djikstras import Graph, ShortestPath
 
 
-def test_sp():
+def test_sp_a():
     graph = Graph(4, [
         (1, 0, 1), 
         (1, 1, 2),
@@ -13,7 +13,7 @@ def test_sp():
     assert sp.shortest_path_weight(3) == 1
     assert sp.shortest_path(3) == [0, 3]
 
-def test_sp():
+def test_sp_b():
     graph = Graph(4, [
         (1, 0, 1), 
         (2, 1, 2),
