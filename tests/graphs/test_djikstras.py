@@ -1,4 +1,4 @@
-from src.djikstras import Graph, ShortestPath
+from src.graphs.djikstras import Graph, ShortestPath
 
 
 def test_sp_a() -> None:
